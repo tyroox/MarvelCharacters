@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+    <ImageView
+        android:id="@+id/imageViewCharacterImageDetail"
+        android:layout_width="0dp"
+        android:layout_height="180dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewCharacterNameDetail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="8dp"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCharacterImageDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewCharacterSeriesDetailHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Series"
+        android:paddingTop="8dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCharacterNameDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <TextView
+        android:id="@+id/textViewSeriesDetail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:textSize="18sp"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCharacterSeriesDetailHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewCharacterStoryNamesDetailHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Stories"
+        android:paddingTop="8dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewSeriesDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewStoryNamesDetail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:textSize="18sp"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCharacterStoryNamesDetailHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewCharacterEventsDetailHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Events"
+        android:paddingTop="8dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewStoryNamesDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewCharacterEventsDetail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:textSize="18sp"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCharacterEventsDetailHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewCharacterComicsDetailHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Comics"
+        android:paddingTop="8dp"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCharacterEventsDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/textViewCharacterComicsDetail"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:textSize="18sp"
+        android:textAlignment="textStart"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCharacterComicsDetailHeader"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
