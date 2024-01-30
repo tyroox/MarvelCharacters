@@ -31,7 +31,7 @@ class DetailFragment : Fragment() {
 
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
 
-        val adapter = CharacterAdapter(Character())
+        val adapter = CharacterAdapter(Character(), requireContext())
         recyclerView.adapter = adapter
 
         viewModel.character.observe(viewLifecycleOwner, Observer { character ->

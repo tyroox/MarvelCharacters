@@ -1,6 +1,7 @@
 package com.example.marvelcharacters.item
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
@@ -34,10 +35,15 @@ class ItemAdapter(private var itemList: List<Item>) : RecyclerView.Adapter<ItemV
             return itemList.size
         }
 
-        @SuppressLint("NotifyDataSetChanged")
+        fun update(updateList: List<Item>){
+            itemList = updateList
+            notifyDataSetChanged()
+        }
+
         fun updateItems(newItems: List<Item>) {
             val oldSize = itemList.size
             itemList = itemList + newItems
             notifyItemRangeInserted(oldSize, newItems.size)
+            Log.d("kfk", "updateItems: ${itemList.size}")
         }
     }

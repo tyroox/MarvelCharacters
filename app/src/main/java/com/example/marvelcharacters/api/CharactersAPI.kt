@@ -15,7 +15,8 @@ interface CharactersAPI {
         @Query("apikey")apikey:String = API_KEY,
         @Query("ts")ts:String= timeStamp,
         @Query("hash")hash:String= hash(),
-        @Query("offset")offset:String
+        @Query("offset")offset:Int,
+        @Query("orderBy")orderBy:String
     ): Call<CharactersResponse>
 
     @GET("/v1/public/characters")
@@ -32,5 +33,6 @@ interface CharactersAPI {
         @Query("apikey")apikey:String = API_KEY,
         @Query("ts")ts:String = timeStamp,
         @Query("hash")hash:String= hash(),
+        @Query("limit")limit:Int
     ): Call<CharactersResponse>
 }

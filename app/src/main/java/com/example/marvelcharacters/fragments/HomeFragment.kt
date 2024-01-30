@@ -1,10 +1,14 @@
 package com.example.marvelcharacters.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.Toast
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelcharacters.R
 import com.example.marvelcharacters.item.ItemAdapter
 import com.example.marvelcharacters.viewmodels.HomeFragmentViewModel
+import com.example.marvelcharacters.viewmodels.SearchViewModel
 import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
@@ -20,10 +25,17 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewModel = HomeFragmentViewModel(offset = "0")
+        val viewModel = HomeFragmentViewModel(offset = 0)
+        val searchViewModel = SearchViewModel()
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         val viewButton = view.findViewById<ImageButton>(R.id.viewButton)
+        val sortButton = view.findViewById<ImageButton>(R.id.sortButton)
+        val editText = view.findViewById<EditText>(R.id.editTextSearch)
+        val searchButton = view.findViewById<ImageButton>(R.id.searchButton)
+
+        val adapter = ItemAdapter(emptyList())
+        recyclerView.adapter = adapter
 
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
@@ -44,8 +56,36 @@ class HomeFragment : Fragment() {
             recyclerView.layoutManager?.onRestoreInstanceState(currentLayoutManager?.onSaveInstanceState())
         }
 
-        val adapter = ItemAdapter(emptyList())
-        recyclerView.adapter = adapter
+        sortButton.setOnClickListener {
+            viewModel.sortCharacterNames()
+            lifecycleScope.launch {
+                adapter.update(mutableListOf())
+                viewModel.deleteItems()
+                viewModel.getData()
+            }
+        }
+
+        editText.doAfterTextChanged { editable ->
+            searchButton.setOnClickListener{
+                val query = editable.toString().trim()
+                if (query.isEmpty()){
+                    val toast = Toast.makeText(context, "Empty search!", Toast.LENGTH_SHORT)
+                    toast.show()
+                }
+                else{
+                    lifecycleScope.launch {
+                        viewModel.deleteItems()
+                        searchViewModel.deleteItems()
+                        Log.d("asddd", "onCreateView: ${viewModel.getItemList().value}")
+                        Log.d("asddd", "onCreateView: ${searchViewModel.getItemList().value}")
+                        searchViewModel.search(query)
+                    }
+                }
+                searchViewModel.getItemList().observe(viewLifecycleOwner, Observer { items ->
+                    adapter.update(items)
+                })
+            }
+        }
 
         recyclerView.addOnScrollListener(object:RecyclerView.OnScrollListener(){
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
