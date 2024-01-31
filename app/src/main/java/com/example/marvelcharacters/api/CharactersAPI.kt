@@ -24,15 +24,15 @@ interface CharactersAPI {
         @Query("apikey")apikey:String = API_KEY,
         @Query("ts")ts:String = timeStamp,
         @Query("hash")hash:String= hash(),
+        @Query("offset")offset:Int,
         @Query("nameStartsWith")search:String
     ): Call<CharactersResponse>
 
     @GET("/v1/public/characters/{characterId}")
     fun getCharacterById(
-        @Path("characterId")characterId:String,
+        @Path("characterId")characterId:Int,
         @Query("apikey")apikey:String = API_KEY,
         @Query("ts")ts:String = timeStamp,
-        @Query("hash")hash:String= hash(),
-        @Query("limit")limit:Int
+        @Query("hash")hash:String= hash()
     ): Call<CharactersResponse>
 }

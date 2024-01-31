@@ -1,12 +1,12 @@
 package com.example.marvelcharacters.viewmodels
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.marvelcharacters.api.RetrofitInstance
-import com.example.marvelcharacters.item.Item
+import com.example.marvelcharacters.model.Character
 import com.example.marvelcharacters.response.CharactersResponse
+import com.example.marvelcharacters.util.Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Call
@@ -14,50 +14,41 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class SearchViewModel (
-    private var itemList: MutableLiveData<List<Item>> = MutableLiveData()
+    private var offset: Int
 ): ViewModel() {
-    suspend fun search(search: String){
-        val nameList = mutableListOf<String>()
-        val imageList = mutableListOf<String>()
-        val seriesCountList = mutableListOf<String>()
-        val idList = mutableListOf<String>()
+    var character = Character()
+    var characterList = mutableListOf<Character>()
+    var liveCharacterList = MutableLiveData<List<Character>>()
+    suspend fun search(search: String) {
         withContext(Dispatchers.Main) {
-            RetrofitInstance.api.getAllSearchedCharacters(search = search).enqueue(object :
-                Callback<CharactersResponse> {
-                override fun onResponse(
-                    call: Call<CharactersResponse>,
-                    response: Response<CharactersResponse>
-                ) {
-                    val data = response.body()!!.data.results
+            RetrofitInstance.api.getAllSearchedCharacters(offset = offset, search = search)
+                .enqueue(object : Callback<CharactersResponse> {
+                    override fun onResponse(
+                        call: Call<CharactersResponse>,
+                        response: Response<CharactersResponse>
+                    ) {
+                        response.body()!!.data.results.map {
+                            character = it.newCharacter()
+                            characterList.add(character)
+                            liveCharacterList.postValue(characterList)
+                        }
+                        Log.d("model", "onCreateView: $character")
+                    }
 
-                    for (i in data){
-                        nameList.add(i.name)
-                        imageList.add(i.thumbnail.path + "." + i.thumbnail.extension)
-                        seriesCountList.add((i.series.available).toString())
-                        idList.add((i.id).toString())
+                    override fun onFailure(call: Call<CharactersResponse>, t: Throwable) {
+                        Log.e("TAG", "onFailure: ${t.stackTrace}")
                     }
-                    for (i in imageList.indices) {
-                        imageList[i] = imageList[i].replace("http://", "https://")
-                    }
-                    val newItems = mutableListOf<Item>()
-                    for (i in nameList.indices) {
-                        newItems.add(Item(imageList[i], nameList[i], seriesCountList[i], idList[i]))
-                    }
-                    itemList.postValue(newItems)
-                }
-
-                override fun onFailure(call: Call<CharactersResponse>, t: Throwable) {
-                    Log.e("TAG", "onFailure: ${t.stackTrace}")
-                }
-            })
+                })
         }
     }
 
-    fun getItemList(): LiveData<List<Item>> {
-        return itemList
+    fun deleteItems() {
+        liveCharacterList.value = emptyList()
+        characterList = mutableListOf()
     }
 
-    fun deleteItems(){
-        itemList.value = mutableListOf()
+    fun updateOffset() {
+        offset += Constants.limit.toInt()
     }
 }
+

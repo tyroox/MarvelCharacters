@@ -18,9 +18,12 @@ interface CharactersDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun upsertAll(characters: List<Character>)
 
-    @Query("SELECT * FROM characters")
+    @Query("SELECT * FROM characters ORDER BY name ASC")
     fun getAllCharacters(): LiveData<List<Character>>
 
     @Delete
     suspend fun deleteCharacter(character: Character)
+
+    @Query("SELECT COUNT(*) FROM characters WHERE id = :characterId")
+    suspend fun isCharacterInDatabase(characterId: Int): Int
 }

@@ -6,7 +6,7 @@
         android:id="@+id/homeFragment"/>
 
     <item android:title="Favorites"
-        android:icon="@drawable/ic_favorite"
+        android:icon="@drawable/ic_favorite_red"
         android:id="@+id/favoritesFragment"/>
 
 </menu>

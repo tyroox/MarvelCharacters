@@ -1,7 +1,6 @@
 package com.example.marvelcharacters.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.marvelcharacters.R
-import com.example.marvelcharacters.item.ItemAdapter
+import com.example.marvelcharacters.adapter.CharacterAdapter
 import com.example.marvelcharacters.viewmodels.HomeFragmentViewModel
 import com.example.marvelcharacters.viewmodels.SearchViewModel
 import kotlinx.coroutines.launch
@@ -26,15 +25,17 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val viewModel = HomeFragmentViewModel(offset = 0)
-        val searchViewModel = SearchViewModel()
+        val searchViewModel = SearchViewModel(offset = 0)
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         val recyclerView: RecyclerView = view.findViewById(R.id.recyclerView)
         val viewButton = view.findViewById<ImageButton>(R.id.viewButton)
         val sortButton = view.findViewById<ImageButton>(R.id.sortButton)
         val editText = view.findViewById<EditText>(R.id.editTextSearch)
         val searchButton = view.findViewById<ImageButton>(R.id.searchButton)
+        var query = ""
+        var isSearch = false
 
-        val adapter = ItemAdapter(emptyList())
+        val adapter = CharacterAdapter(emptyList())
         recyclerView.adapter = adapter
 
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -57,9 +58,11 @@ class HomeFragment : Fragment() {
         }
 
         sortButton.setOnClickListener {
+            isSearch = false
             viewModel.sortCharacterNames()
+            val toast = Toast.makeText(context, "Characters are sorted!", Toast.LENGTH_SHORT)
+            toast.show()
             lifecycleScope.launch {
-                adapter.update(mutableListOf())
                 viewModel.deleteItems()
                 viewModel.getData()
             }
@@ -67,7 +70,8 @@ class HomeFragment : Fragment() {
 
         editText.doAfterTextChanged { editable ->
             searchButton.setOnClickListener{
-                val query = editable.toString().trim()
+                isSearch = true
+                query = editable.toString().trim()
                 if (query.isEmpty()){
                     val toast = Toast.makeText(context, "Empty search!", Toast.LENGTH_SHORT)
                     toast.show()
@@ -76,13 +80,11 @@ class HomeFragment : Fragment() {
                     lifecycleScope.launch {
                         viewModel.deleteItems()
                         searchViewModel.deleteItems()
-                        Log.d("asddd", "onCreateView: ${viewModel.getItemList().value}")
-                        Log.d("asddd", "onCreateView: ${searchViewModel.getItemList().value}")
                         searchViewModel.search(query)
                     }
                 }
-                searchViewModel.getItemList().observe(viewLifecycleOwner, Observer { items ->
-                    adapter.update(items)
+                searchViewModel.liveCharacterList.observe(viewLifecycleOwner, Observer {
+                    adapter.update(it)
                 })
             }
         }
@@ -94,16 +96,21 @@ class HomeFragment : Fragment() {
                 val lastVisibleItemPosition = layoutManager.findLastVisibleItemPosition()
                 val totalItemCount = layoutManager.itemCount
                 if (lastVisibleItemPosition == totalItemCount-1){
-                    viewModel.updateOffset()
                     lifecycleScope.launch {
-                        viewModel.getData()
+                        if (!isSearch){
+                            viewModel.updateOffset()
+                            viewModel.getData()
+                        }else{
+                            searchViewModel.updateOffset()
+                            searchViewModel.search(query)
+                        }
                     }
                 }
             }
         })
 
-        viewModel.getItemList().observe(viewLifecycleOwner, Observer { items ->
-            adapter.updateItems(items)
+        viewModel.liveCharacterList.observe(viewLifecycleOwner, Observer {
+            adapter.update(it)
         })
 
         lifecycleScope.launch {
