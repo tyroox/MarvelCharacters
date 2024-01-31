@@ -58,8 +58,8 @@ class HomeFragment : Fragment() {
         }
 
         sortButton.setOnClickListener {
-            isSearch = false
             viewModel.sortCharacterNames()
+            isSearch = false
             val toast = Toast.makeText(context, "Characters are sorted!", Toast.LENGTH_SHORT)
             toast.show()
             lifecycleScope.launch {
@@ -78,6 +78,8 @@ class HomeFragment : Fragment() {
                 }
                 else{
                     lifecycleScope.launch {
+                        editText.setText("")
+                        searchViewModel.resetOffset()
                         viewModel.deleteItems()
                         searchViewModel.deleteItems()
                         searchViewModel.search(query)

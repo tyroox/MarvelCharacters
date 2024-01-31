@@ -21,21 +21,20 @@
         android:id="@+id/editTextSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="12"
+        android:ems="11"
         android:hint="Search"
         android:inputType="text"
         android:minHeight="48dp"
-        app:layout_constraintStart_toStartOf="@+id/recyclerView"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/viewButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/sortButton"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sortButton"
-        app:layout_constraintTop_toTopOf="@+id/sortButton"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_list"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
@@ -43,9 +42,10 @@
         android:id="@+id/sortButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/searchButton"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintEnd_toStartOf="@+id/viewButton"
         app:layout_constraintStart_toEndOf="@+id/searchButton"
-        app:layout_constraintTop_toTopOf="@+id/searchButton"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_sort"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
@@ -53,9 +53,9 @@
         android:id="@+id/searchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextSearch"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintStart_toEndOf="@+id/editTextSearch"
-        app:layout_constraintTop_toTopOf="@+id/editTextSearch"
+        app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_search"
         tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 

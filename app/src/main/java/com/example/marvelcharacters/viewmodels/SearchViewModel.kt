@@ -50,5 +50,9 @@ class SearchViewModel (
     fun updateOffset() {
         offset += Constants.limit.toInt()
     }
+
+    fun resetOffset(){
+        offset = 0
+    }
 }
 
